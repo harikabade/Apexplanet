@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Styled Webpage</title>
+    <style>
+        /* Apply background and fonts */
+        body {
+            background-color: #9726cc;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        /* Headings */
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 5px;
+        }
+
+        /* Paragraphs */
+        p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Image styling */
+        img {
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        /* Links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Button */
+        button {
+            background-color: #e67e22;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d35400;
+        }
+    </style>
+</head>
+<body>
+    <!-- Headings -->
+    <h1>Welcome to My Webpage</h1>
+    <h2>About Me</h2>
+
+    <!-- Paragraph -->
+    <p>
+        Hi, I’m learning how to style webpages with CSS and add interactivity using JavaScript!
+    </p>
+
+    <!-- Image -->
+    <img src="https://via.placeholder.com/300" alt="Placeholder Image">
+
+    <!-- Link -->
+    <p>
+        Visit: 
+        <a href="https://www.wikipedia.org" target="_blank">Wikipedia</a>
+    </p>
+
+    <!-- Button for JavaScript -->
+    <button id="alertBtn">Click Me!</button>
+
+    <script>
+        // Find the button
+        const btn = document.getElementById("alertBtn");
+
+        // Add click event
+        btn.addEventListener("click", function() {
+            alert("Hello! You clicked the button 🎉");
+        });
+    </script>
+</body>
+</html>
