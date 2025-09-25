@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Web Project</title>
+  <style>
+    /* ---------- Global Styles ---------- */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f9;
+      color: #333;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin: 0;
+    }
+
+    /* ---------- Navigation (Flexbox) ---------- */
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #34495e;
+      padding: 10px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- Layout (Grid) ---------- */
+    .container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+    section {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* ---------- Quiz ---------- */
+    .quiz button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      background: #2980b9;
+      color: white;
+      cursor: pointer;
+    }
+    .quiz button:hover {
+      background: #21618c;
+    }
+
+    /* ---------- Image Carousel ---------- */
+    .carousel {
+      position: relative;
+      overflow: hidden;
+    }
+    .carousel img {
+      width: 100%;
+      border-radius: 10px;
+      display: none;
+    }
+    .carousel img.active {
+      display: block;
+    }
+    .carousel button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      font-size: 20px;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+    .carousel .prev {
+      left: 10px;
+    }
+    .carousel .next {
+      right: 10px;
+    }
+
+    /* ---------- API Section ---------- */
+    .api button {
+      padding: 10px 20px;
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .api button:hover {
+      background: #219150;
+    }
+    .api p {
+      margin-top: 15px;
+      font-style: italic;
+    }
+
+    /* ---------- Responsive Design ---------- */
+    @media (max-width: 1024px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+      nav a {
+        margin: 0 8px;
+        font-size: 0.9rem;
+      }
+      section {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Advanced Web Project</h1>
+    <p>Responsive Design + Interactive JS + API Data</p>
+  </header>
+
+  <nav>
+    <a href="#quiz">Quiz</a>
+    <a href="#carousel">Carousel</a>
+    <a href="#api">API</a>
+  </nav>
+
+  <div class="container">
+    <!-- Quiz Section -->
+    <section id="quiz" class="quiz">
+      <h2>Quick Quiz</h2>
+      <p id="question">Loading question...</p>
+      <div id="options"></div>
+      <button onclick="nextQuestion()">Next Question</button>
+      <p id="result"></p>
+    </section>
+
+    <!-- Carousel Section -->
+    <section id="carousel" class="carousel">
+      <h2>Image Carousel</h2>
+      <img src="https://via.placeholder.com/600x300/3498db/ffffff?text=Image+1" class="active">
+      <img src="https://via.placeholder.com/600x300/2ecc71/ffffff?text=Image+2">
+      <img src="https://via.placeholder.com/600x300/e74c3c/ffffff?text=Image+3">
+      <button class="prev" onclick="changeSlide(-1)">❮</button>
+      <button class="next" onclick="changeSlide(1)">❯</button>
+    </section>
+
+    <!-- API Section -->
+    <section id="api" class="api">
+      <h2>Random Joke (API)</h2>
+      <button onclick="getJoke()">Get a Joke</button>
+      <p id="joke"></p>
+    </section>
+  </div>
+
+  <script>
+    /* ---------- QUIZ ---------- */
+    const quizData = [
+      {
+        question: "Which language is used to style web pages?",
+        options: ["HTML", "CSS", "JavaScript", "Python"],
+        answer: "CSS"
+      },
+      {
+        question: "Which tag is used for the largest heading in HTML?",
+        options: ["<h6>", "<h1>", "<head>", "<title>"],
+        answer: "<h1>"
+      },
+      {
+        question: "Which symbol is used for IDs in CSS?",
+        options: [".", "#", "$", "*"],
+        answer: "#"
+      }
+    ];
+    let currentQuestion = 0;
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      document.getElementById("question").textContent = q.question;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      q.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, q.answer);
+        optionsDiv.appendChild(btn);
+      });
+    }
+    function checkAnswer(selected, correct) {
+      document.getElementById("result").textContent = 
+        selected === correct ? "✅ Correct!" : "❌ Wrong. Correct answer: " + correct;
+    }
+    function nextQuestion() {
+      currentQuestion = (currentQuestion + 1) % quizData.length;
+      document.getElementById("result").textContent = "";
+      loadQuestion();
+    }
+    loadQuestion();
+
+    /* ---------- CAROUSEL ---------- */
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".carousel img");
+    function changeSlide(n) {
+      slides[slideIndex].classList.remove("active");
+      slideIndex = (slideIndex + n + slides.length) % slides.length;
+      slides[slideIndex].classList.add("active");
+    }
+
+    /* ---------- API ---------- */
+    async function getJoke() {
+      const res = await fetch("https://official-joke-api.appspot.com/random_joke");
+      const data = await res.json();
+      document.getElementById("joke").textContent = data.setup + " - " + data.punchline;
+    }
+  </script>
+</body>
+</html>
