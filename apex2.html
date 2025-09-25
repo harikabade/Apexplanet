@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShopSmart | Premium Tech Store</title>
+  <!-- Minified critical CSS inline for fastest render -->
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;line-height:1.6;color:#333;background:#f9fafb}
+    .container{width:90%;max-width:1200px;margin:0 auto;padding:1rem}.header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+    .logo{font-size:1.5rem;font-weight:bold;color:#4f46e5}.nav{display:flex;gap:1.5rem}.nav a{color:#4b5563;text-decoration:none;transition:color .2s}
+    .nav a:hover{color:#4f46e5}.hero{background:#4f46e5;color:white;text-align:center;padding:4rem 1rem;border-radius:12px;margin:2rem 0}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin:2rem 0}.card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);transition:transform .3s}
+    .card:hover{transform:translateY(-5px)}.card-img{width:100%;height:200px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#9ca3af}
+    .card-img img{width:100%;height:100%;object-fit:contain}.card-body{padding:1.25rem}.card h3{margin:0.5rem 0}.price{color:#4f46e5;font-weight:bold;font-size:1.25rem}
+    .btn{display:inline-block;background:#4f46e5;color:white;padding:0.75rem 1.5rem;border:none;border-radius:8px;cursor:pointer;font-weight:600;transition:background .2s}
+    .btn:hover{background:#4338ca}.footer{text-align:center;padding:2rem 0;color:#6b7280}
+    @media (max-width:768px){.nav{display:none}.hero{padding:2rem 1rem}}
+  </style>
+</head>
+<body>
+  <header class="container header">
+    <div class="logo">ShopSmart</div>
+    <nav class="nav">
+      <a href="#">Home</a>
+      <a href="#">Products</a>
+      <a href="#">Cart</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Summer Tech Sale</h1>
+      <p>Up to 50% off on premium gadgets</p>
+    </section>
+
+    <section class="products" id="product-grid">
+      <!-- Products dynamically loaded via JS -->
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <p>&copy; 2023 ShopSmart. All rights reserved.</p>
+  </footer>
+
+  <!-- Minified JS at bottom for non-blocking load -->
+  <script>
+    // Sample product data (in real app: fetch from API)
+    const products = [
+      {id:1,name:"Wireless Earbuds",price:79.99,img:"earbuds.png",category:"audio"},
+      {id:2,name:"Smart Watch",price:199.99,img:"watch.png",category:"wearables"},
+      {id:3,name:"Bluetooth Speaker",price:59.99,img:"speaker.png",category:"audio"},
+      {id:4,name:"Phone Stand",price:19.99,img:"stand.png",category:"accessories"}
+    ];
+
+    // Render products with lazy loading
+    const grid = document.getElementById('product-grid');
+    products.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-img">
+          <img src="${p.img}" alt="${p.name}" loading="lazy">
+        </div>
+        <div class="card-body">
+          <h3>${p.name}</h3>
+          <p class="price">$${p.price.toFixed(2)}</p>
+          <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Simulated cart function
+    function addToCart(id) {
+      alert(`Product ${id} added to cart!`);
+    }
+
+    // Performance: Defer non-critical JS
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(console.log);
+      });
+    }
+  </script>
+</body>
+</html>
